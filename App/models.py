@@ -28,7 +28,8 @@ class Place(db.Model):
     place_id = db.Column(db.Integer, primary_key=True)
     # General information
     name = db.Column(db.String(50), unique=False, nullable=False)
-    address = db.Column(db.String(50), unique=False, nullable=False)
+    latitude = db.Column(db.Float, unique=False, nullable=False)
+    longitude = db.Column(db.Float, unique=False, nullable=False)
     # Relationships
     reviews = db.relationship("Review", back_populates="place")
 
@@ -37,7 +38,8 @@ class Place(db.Model):
         return {
             'id' : self.place_id,
             'name' : self.name,
-            'address' : self.address,
+            'latitude' : self.latitude,
+            'longitude' : self.longitude,
             'reviews' : [r.dict for r in self.reviews]
         }
 

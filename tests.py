@@ -61,7 +61,8 @@ new_person = {
 # create a new place
 new_place = {
     'name' : 'The Pub',
-    'address' : 'Portchester'
+    'latitude' : '1.23',
+    'longitude' : '3.21'
 }
 # create a new review
 new_review = {
@@ -72,9 +73,9 @@ new_review = {
 }
 
 # create a new person from provided json parameters
-#test(f'/person', 'post', 200, json=new_person)
-#test(f'/place', 'post', 200, json=new_place)
-#test(f'/review', 'post', 200, json=new_review)
+test(f'/person', 'post', 200, json=new_person)
+test(f'/place', 'post', 200, json=new_place)
+test(f'/review', 'post', 200, json=new_review)
 
 people = test(f'/person', 'get', 200)
 places = test(f'/place', 'get', 200)

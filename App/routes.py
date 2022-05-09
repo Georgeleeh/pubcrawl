@@ -49,7 +49,8 @@ def all_places():
         response_data = request.get_json()
         p = Place(
             name = response_data['name'],
-            address = response_data['address']
+            latitude = response_data['latitude'],
+            longitude = response_data['longitude']
         )
         db.session.add(p)
         db.session.commit()
