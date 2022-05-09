@@ -1,6 +1,6 @@
 from App import application as app
 from App import db
-from flask import jsonify, request
+from flask import jsonify, request, render_template
 from App.models import Person, Place, Review
 
 @app.route('/')
@@ -46,14 +46,24 @@ def all_places():
         return jsonify([p.dict for p in all_places]), 200
     # POST a new review
     elif request.method == 'POST':
-        response_data = request.get_json()
-        p = Place(
-            name = response_data['name'],
-            latitude = response_data['latitude'],
-            longitude = response_data['longitude']
-        )
-        db.session.add(p)
-        db.session.commit()
+        button_value = request.form.get('button')
+        if button_value == 'save':
+            p = Place(
+                name = request.form.get('name'),
+                latitude = request.form.get('lat'),
+                longitude = request.form.get('long')
+            )
+            db.session.add(p)
+            db.session.commit()
+        else:
+            response_data = request.get_json()
+            p = Place(
+                name = response_data['name'],
+                latitude = response_data['latitude'],
+                longitude = response_data['longitude']
+            )
+            db.session.add(p)
+            db.session.commit()
         return {'success' : 'all good!'}, 200
 
 
@@ -63,6 +73,13 @@ def get_place(id):
     if request.method == 'GET':
         place = Place.query.filter_by(place_id=id).first()
         return jsonify(place.dict), 200
+
+@app.route('/place/create', methods=['GET'])
+def create_place():
+    # Return the from for creating new places
+    if request.method == 'GET':
+        return render_template('new_place.html')
+
 
 # ----------------  Review  ---------------- #
 
