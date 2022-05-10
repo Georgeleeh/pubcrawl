@@ -2,6 +2,7 @@ from App import application as app
 from App import db
 from flask import jsonify, request, render_template
 from App.models import Person, Place, Review
+from datetime import datetime
 
 @app.route('/')
 def home():
@@ -107,15 +108,31 @@ def all_reviews():
         return jsonify([r.dict for r in all_reviews]), 200
     # POST a new review
     elif request.method == 'POST':
-        response_data = request.get_json()
-        p = Review(
-            person_id = response_data['person_id'],
-            place_id = response_data['place_id'],
-            rating = response_data['rating'],
-            content = response_data['content']
-        )
-        db.session.add(p)
-        db.session.commit()
+        button_value = request.form.get('button')
+        if button_value == 'save':
+
+            p = Review(
+                person_id = request.form.get('person_id'),
+                place_id = request.form.get('place_id'),
+                rating = request.form.get('rating'),
+                content = request.form.get('content'),
+                date_created = datetime.now(),
+                date_modified = datetime.now()
+            )
+            db.session.add(p)
+            db.session.commit()
+        else:
+            response_data = request.get_json()
+            p = Review(
+                person_id = response_data['person_id'],
+                place_id = response_data['place_id'],
+                rating = response_data['rating'],
+                content = response_data['content'],
+                date_created = datetime.fromtimestamp(response_data['date_created']),
+                date_modified = datetime.fromtimestamp(response_data['date_modified'])
+            )
+            db.session.add(p)
+            db.session.commit()
         return {'success' : 'all good!'}, 200
 
 @app.route('/review/<id>', methods=['GET'])
@@ -124,3 +141,11 @@ def get_review(id):
     if request.method == 'GET':
         review = Review.query.filter_by(review_id=id).first()
         return jsonify(review.dict), 200
+
+@app.route('/review/create', methods=['GET'])
+def create_review():
+    # Return the from for creating new places
+    if request.method == 'GET':
+        all_places = Place.query.all()
+        all_people = Person.query.all()
+        return render_template('new_review.html', all_places=all_places, all_people=all_people)
