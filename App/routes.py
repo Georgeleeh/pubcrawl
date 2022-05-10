@@ -19,14 +19,24 @@ def all_people():
         return jsonify([p.dict for p in all_people]), 200
     # POST a new review
     elif request.method == 'POST':
-        response_data = request.get_json()
-        p = Person(
-            first_name = response_data['first_name'],
-            last_name = response_data['last_name'],
-            nickname = response_data['nickname'],
-        )
-        db.session.add(p)
-        db.session.commit()
+        button_value = request.form.get('button')
+        if button_value == 'save':
+            p = Person(
+                first_name = request.form.get('first_name'),
+                last_name = request.form.get('last_name'),
+                nickname = request.form.get('nickname'),
+            )
+            db.session.add(p)
+            db.session.commit()
+        else:
+            response_data = request.get_json()
+            p = Person(
+                first_name = response_data['first_name'],
+                last_name = response_data['last_name'],
+                nickname = response_data['nickname'],
+            )
+            db.session.add(p)
+            db.session.commit()
         return {'success' : 'all good!'}, 200
 
 @app.route('/person/<id>', methods=['GET'])
@@ -35,6 +45,12 @@ def get_person(id):
     if request.method == 'GET':
         person = Person.query.filter_by(person_id=id).first()
         return jsonify(person.dict), 200
+
+@app.route('/person/create', methods=['GET'])
+def create_person():
+    # Return the from for creating new places
+    if request.method == 'GET':
+        return render_template('new_person.html')
 
 # ----------------  PLACE  ---------------- #
 
