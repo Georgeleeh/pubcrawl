@@ -51,6 +51,8 @@ class Review(db.Model):
     review_id = db.Column(db.Integer, primary_key=True)
     rating = db.Column(db.Float, unique=False, nullable=False)
     content = db.Column(db.Text, unique=False, nullable=False)
+    date_created = db.Column(db.DateTime, unique=False, nullable=False)
+    date_modified = db.Column(db.DateTime, unique=False, nullable=False)
 
     # Relationships
     person_id = db.Column(db.Integer, db.ForeignKey('person.person_id'))
@@ -66,6 +68,8 @@ class Review(db.Model):
             'content' : self.content,
             'person_id' : self.person_id,
             'place_id' : self.place_id,
+            'date_created' : self.date_created.timestamp(),
+            'date_modified' : self.date_modified.timestamp()
         }
 
     def __str__(self):
