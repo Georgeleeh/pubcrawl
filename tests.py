@@ -69,13 +69,21 @@ new_review = {
     'person_id' : 1,
     'place_id' : 1,
     'rating' : 6.9,
-    'content' : "It ain't too bad, boii."
+    'content' : "It ain't too bad, boii.",
+    'date_created' : datetime.now().timestamp(),
+    'date_modified' : datetime.now().timestamp()
 }
 
 # create a new person from provided json parameters
-test(f'/person', 'post', 200, json=new_person)
-test(f'/place', 'post', 200, json=new_place)
-test(f'/review', 'post', 200, json=new_review)
+#test(f'/person', 'post', 200, json=new_person)
+#test(f'/place', 'post', 200, json=new_place)
+#test(f'/review', 'post', 200, json=new_review)
+
+print('http://127.0.0.1:5000/person/create')
+print('http://127.0.0.1:5000/place/create')
+print('http://127.0.0.1:5000/review/create')
+
+input('waiting....')
 
 people = test(f'/person', 'get', 200)
 places = test(f'/place', 'get', 200)
