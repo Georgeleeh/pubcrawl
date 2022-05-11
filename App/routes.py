@@ -111,7 +111,7 @@ def all_reviews():
         button_value = request.form.get('button')
         if button_value == 'save':
 
-            p = Review(
+            r = Review(
                 person_id = request.form.get('person_id'),
                 place_id = request.form.get('place_id'),
                 rating = request.form.get('rating'),
@@ -119,11 +119,11 @@ def all_reviews():
                 date_created = datetime.now(),
                 date_modified = datetime.now()
             )
-            db.session.add(p)
+            db.session.add(r)
             db.session.commit()
         else:
             response_data = request.get_json()
-            p = Review(
+            r = Review(
                 person_id = response_data['person_id'],
                 place_id = response_data['place_id'],
                 rating = response_data['rating'],
@@ -131,7 +131,7 @@ def all_reviews():
                 date_created = datetime.fromtimestamp(response_data['date_created']),
                 date_modified = datetime.fromtimestamp(response_data['date_modified'])
             )
-            db.session.add(p)
+            db.session.add(r)
             db.session.commit()
         return {'success' : 'all good!'}, 200
 

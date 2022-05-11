@@ -12,7 +12,7 @@
           <p>Who are you?</p>
         </li>
         <li class="list-group-item card-body">
-          <select class="person" id="person_id">
+          <select class="form-control" id="person_id" name="person_id">
             {% for p in all_people %}
             <option value="{{p['person_id']}}">{{p['nickname']}}</option>
             {% endfor %}
@@ -30,7 +30,7 @@
           <p>What is the name of this new place?</p>
         </li>
         <li class="list-group-item card-body">
-          <select class="place" id="place_id">
+          <select class="form-control" id="place_id" name="place_id">
             {% for p in all_places %}
             <option value="{{p['place_id']}}">{{p['name']}}</option>
             {% endfor %}
