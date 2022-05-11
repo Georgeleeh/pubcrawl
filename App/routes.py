@@ -155,3 +155,23 @@ def create_review():
         all_places = Place.query.all()
         all_people = Person.query.all()
         return render_template('new_review.html', all_places=all_places, all_people=all_people)
+
+@app.route('/review/<id>/edit', methods=['GET', 'POST'])
+def edit_review(id):
+    if request.method == 'GET':
+        all_places = Place.query.all()
+        all_people = Person.query.all()
+        review = Review.query.filter_by(review_id=id).first()
+        return render_template('edit_review.html', id=id, all_places=all_places, all_people=all_people, review=review)
+    elif request.method == 'POST':
+        button_value = request.form.get('button')
+        if button_value == 'save':
+            review = Review.query.filter_by(review_id=id).first()
+            review.person_id = request.form.get('person_id')
+            review.place_id = request.form.get('place_id')
+            review.rating = request.form.get('rating')
+            review.content = request.form.get('content')
+            review.date_modified = datetime.now()
+            db.session.add(review)
+            db.session.commit()
+            return {'success' : 'all good!'}, 200
