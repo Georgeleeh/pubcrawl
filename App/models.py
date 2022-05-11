@@ -30,6 +30,7 @@ class Place(db.Model):
     name = db.Column(db.String(50), unique=False, nullable=False)
     latitude = db.Column(db.Float, unique=False, nullable=False)
     longitude = db.Column(db.Float, unique=False, nullable=False)
+    aggregate = db.Column(db.Float, unique=False, nullable=True)
     # Relationships
     reviews = db.relationship("Review", back_populates="place")
 
@@ -40,6 +41,7 @@ class Place(db.Model):
             'name' : self.name,
             'latitude' : self.latitude,
             'longitude' : self.longitude,
+            'aggregate' : self.aggregate,
             'reviews' : [r.dict for r in self.reviews]
         }
 
