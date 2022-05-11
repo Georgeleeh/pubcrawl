@@ -3,12 +3,17 @@ from App import db
 from flask import jsonify, request, render_template
 from App.models import Person, Place, Review
 from datetime import datetime
+import statistics
 
-@app.route('/')
+# ---------------  WEBSITE  -------------- #
+
+@app.route('/', methods=['GET'])
 def home():
-    R = jsonify("Hello World!")
-    R.status_code = 200
-    return R
+    # Return the from for creating new places
+    if request.method == 'GET':
+        places = Place.query.all()
+        places = [p for p in places if len(p.reviews) > 0]
+        return render_template('home.html', places=places)
 
 # ---------------  PERSON  --------------- #
 
@@ -110,7 +115,6 @@ def all_reviews():
     elif request.method == 'POST':
         button_value = request.form.get('button')
         if button_value == 'save':
-
             r = Review(
                 person_id = request.form.get('person_id'),
                 place_id = request.form.get('place_id'),
@@ -119,8 +123,6 @@ def all_reviews():
                 date_created = datetime.now(),
                 date_modified = datetime.now()
             )
-            db.session.add(r)
-            db.session.commit()
         else:
             response_data = request.get_json()
             r = Review(
@@ -131,8 +133,12 @@ def all_reviews():
                 date_created = datetime.fromtimestamp(response_data['date_created']),
                 date_modified = datetime.fromtimestamp(response_data['date_modified'])
             )
-            db.session.add(r)
-            db.session.commit()
+        db.session.add(r)
+        # Calculate the new aggregate for the place
+        p = Place.query.filter_by(place_id=r.place_id).first()
+        p.aggregate = round(statistics.mean([float(r.rating) for r in p.reviews]), 2)
+        db.session.add(p)
+        db.session.commit()
         return {'success' : 'all good!'}, 200
 
 @app.route('/review/<id>', methods=['GET'])

@@ -1,0 +1,19 @@
+{% extends "base.html" %} {% block content %} {% for place in places %}
+<div class="card" style="width: 18rem">
+  <div class="card-body">
+    <h5 class="card-title">{{place.name}}</h5>
+    <p class="card-text">
+      Some quick example text to build on the card title and make up the bulk of
+      the card's content.
+    </p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <div class="card-header">Average Review - {{place.aggregate}}</div>
+    {% for review in place.reviews %}
+    <li class="list-group-item">
+      {{review.person.nickname}} - {{review.rating}} <br />{{review.content}}
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endfor %} {% endblock %}
