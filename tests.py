@@ -73,11 +73,23 @@ new_review = {
     'date_created' : datetime.now().timestamp(),
     'date_modified' : datetime.now().timestamp()
 }
+# create a new review
+second_review = {
+    'person_id' : 1,
+    'place_id' : 1,
+    'rating' : 7.9,
+    'content' : "It gud.",
+    'date_created' : datetime.now().timestamp(),
+    'date_modified' : datetime.now().timestamp()
+}
 
 # create a new person from provided json parameters
-#test(f'/person', 'post', 200, json=new_person)
-#test(f'/place', 'post', 200, json=new_place)
-#test(f'/review', 'post', 200, json=new_review)
+response = input('create new entries? Y/N\n')
+if response.lower() == 'y':
+    test(f'/person', 'post', 200, json=new_person)
+    test(f'/place', 'post', 200, json=new_place)
+    test(f'/review', 'post', 200, json=new_review)
+    test(f'/review', 'post', 200, json=second_review)
 
 print('http://127.0.0.1:5000/person/create')
 print('http://127.0.0.1:5000/place/create')
