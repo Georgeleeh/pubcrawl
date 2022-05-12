@@ -1,6 +1,6 @@
 ## Bugs / todo
 
--
+- Define image upload path in config
 
 ## Roadmap
 
@@ -16,7 +16,7 @@
 - Able to view entries through a blog-style webpage
 - Able to edit entries through a web page
 
-# V0.3
+# V0.3 - DONE
 
 - Image upload and storage
 - Add images for People, PLaces, and Reviews
