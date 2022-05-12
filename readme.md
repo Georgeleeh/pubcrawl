@@ -1,3 +1,7 @@
+## Bugs / todo
+
+-
+
 ## Roadmap
 
 # V0.1 - DONE
@@ -7,19 +11,21 @@
 - Reviews
 - Able to create entries for all tables through a simple web form
 
-# V0.2
+# V0.2 - DONE
 
 - Able to view entries through a blog-style webpage
-
-# V0.3
-
 - Able to edit entries through a web page
 
-# V0.4
+# V0.3
 
 - Image upload and storage
 - Add images for People, PLaces, and Reviews
 
-# V1
+# V0.4
 
-- Cosmetic finishes and data persistence
+- Add interactive map to home page with pins for visited locations
+
+# V0.9
+
+- Migrate UI to React
+- Add dropdown to show all reviews for a lcoation?
