@@ -7,6 +7,7 @@ class Person(db.Model):
     first_name = db.Column(db.String(50), unique=False, nullable=False)
     last_name = db.Column(db.String(50), unique=False, nullable=False)
     nickname = db.Column(db.String(50), unique=False, nullable=True)
+    image = db.Column(db.String(50), unique=False, nullable=True)
     # Relationships
     reviews = db.relationship("Review", back_populates="person")
 
@@ -17,7 +18,8 @@ class Person(db.Model):
             'first_name' : self.first_name,
             'last_name' : self.last_name,
             'nickname' : self.nickname,
-            'reviews' : [r.dict for r in self.reviews]
+            'reviews' : [r.dict for r in self.reviews],
+            'image' : self.image
         }
 
     def __str__(self):
@@ -31,6 +33,7 @@ class Place(db.Model):
     latitude = db.Column(db.Float, unique=False, nullable=False)
     longitude = db.Column(db.Float, unique=False, nullable=False)
     aggregate = db.Column(db.Float, unique=False, nullable=True)
+    image = db.Column(db.String(50), unique=False, nullable=True)
     # Relationships
     reviews = db.relationship("Review", back_populates="place")
 
@@ -42,7 +45,8 @@ class Place(db.Model):
             'latitude' : self.latitude,
             'longitude' : self.longitude,
             'aggregate' : self.aggregate,
-            'reviews' : [r.dict for r in self.reviews]
+            'reviews' : [r.dict for r in self.reviews],
+            'image' : self.image
         }
 
     def __str__(self):
@@ -55,6 +59,7 @@ class Review(db.Model):
     content = db.Column(db.Text, unique=False, nullable=False)
     date_created = db.Column(db.DateTime, unique=False, nullable=False)
     date_modified = db.Column(db.DateTime, unique=False, nullable=False)
+    image = db.Column(db.String(50), unique=False, nullable=True)
 
     # Relationships
     person_id = db.Column(db.Integer, db.ForeignKey('person.person_id'))
@@ -71,7 +76,8 @@ class Review(db.Model):
             'person_id' : self.person_id,
             'place_id' : self.place_id,
             'date_created' : self.date_created.timestamp(),
-            'date_modified' : self.date_modified.timestamp()
+            'date_modified' : self.date_modified.timestamp(),
+            'image' : self.image
         }
 
     def __str__(self):

@@ -4,6 +4,7 @@ from flask import jsonify, request, render_template
 from werkzeug.utils import secure_filename
 from App.models import Person, Place, Review
 from datetime import datetime
+from pathlib import Path
 import statistics
 
 # ---------------  WEBSITE  -------------- #
@@ -42,6 +43,7 @@ def all_people():
                 first_name = request.form.get('first_name'),
                 last_name = request.form.get('last_name'),
                 nickname = request.form.get('nickname'),
+                image = None if request.form.get('image') == '' else request.form.get('image')
             )
             db.session.add(p)
             db.session.commit()
@@ -67,7 +69,9 @@ def get_person(id):
 def create_person():
     # Return the from for creating new places
     if request.method == 'GET':
-        return render_template('new_person.html')
+        images_path = Path("./App/static/images/person").iterdir()
+        images = [[i.as_posix(), i.stem ] for i in images_path]
+        return render_template('new_person.html', images=images)
 
 # ----------------  PLACE  ---------------- #
 
@@ -84,7 +88,8 @@ def all_places():
             p = Place(
                 name = request.form.get('name'),
                 latitude = request.form.get('lat'),
-                longitude = request.form.get('long')
+                longitude = request.form.get('long'),
+                image = None if request.form.get('image') == '' else request.form.get('image')
             )
             db.session.add(p)
             db.session.commit()
@@ -99,7 +104,6 @@ def all_places():
             db.session.commit()
         return {'success' : 'all good!'}, 200
 
-
 @app.route('/place/<id>', methods=['GET'])
 def get_place(id):
     # Return a specific place
@@ -111,7 +115,9 @@ def get_place(id):
 def create_place():
     # Return the from for creating new places
     if request.method == 'GET':
-        return render_template('new_place.html')
+        images_path = Path("./App/static/images/place").iterdir()
+        images = [[i.as_posix(), i.stem ] for i in images_path]
+        return render_template('new_place.html', images=images)
 
 
 # ----------------  Review  ---------------- #
@@ -132,7 +138,8 @@ def all_reviews():
                 rating = request.form.get('rating'),
                 content = request.form.get('content'),
                 date_created = datetime.now(),
-                date_modified = datetime.now()
+                date_modified = datetime.now(),
+                image = None if request.form.get('image') == '' else request.form.get('image')
             )
         else:
             response_data = request.get_json()
@@ -165,7 +172,9 @@ def create_review():
     if request.method == 'GET':
         all_places = Place.query.all()
         all_people = Person.query.all()
-        return render_template('new_review.html', all_places=all_places, all_people=all_people)
+        images_path = Path("./App/static/images/review").iterdir()
+        images = [[i.as_posix(), i.stem ] for i in images_path]
+        return render_template('new_review.html', all_places=all_places, all_people=all_people, images=images)
 
 @app.route('/review/<id>/edit', methods=['GET', 'POST'])
 def edit_review(id):
@@ -173,7 +182,9 @@ def edit_review(id):
         all_places = Place.query.all()
         all_people = Person.query.all()
         review = Review.query.filter_by(review_id=id).first()
-        return render_template('edit_review.html', id=id, all_places=all_places, all_people=all_people, review=review)
+        images_path = Path("./App/static/images/review").iterdir()
+        images = [[i.as_posix(), i.stem ] for i in images_path]
+        return render_template('edit_review.html', id=id, all_places=all_places, all_people=all_people, review=review, images=images)
     elif request.method == 'POST':
         button_value = request.form.get('button')
         if button_value == 'save':
@@ -183,6 +194,7 @@ def edit_review(id):
             review.rating = request.form.get('rating')
             review.content = request.form.get('content')
             review.date_modified = datetime.now()
+            review.image = None if request.form.get('image') == '' else request.form.get('image')
             db.session.add(review)
             db.session.commit()
             return {'success' : 'all good!'}, 200
