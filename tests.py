@@ -111,6 +111,11 @@ person = test(f'/person/1', 'get', 200)
 place = test(f'/place/1', 'get', 200)
 review = test(f'/review/1', 'get', 200)
 
+print('http://127.0.0.1:5000/review/1/edit')
+input('waiting....')
+
+review = test(f'/review/1', 'get', 200)
+
 print()
 print(person)
 print(place)
