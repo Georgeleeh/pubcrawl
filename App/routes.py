@@ -1,6 +1,7 @@
 from App import application as app
 from App import db
 from flask import jsonify, request, render_template
+from werkzeug.utils import secure_filename
 from App.models import Person, Place, Review
 from datetime import datetime
 import statistics
@@ -14,6 +15,16 @@ def home():
         places = Place.query.all()
         places = [p for p in places if len(p.reviews) > 0]
         return render_template('home.html', places=places)
+
+@app.route('/image/upload', methods=['GET', 'POST'])
+def image_upload():
+    # Return the from for creating new places
+    if request.method == 'GET':
+        return render_template('image_upload.html')
+    elif request.method == 'POST':
+      f = request.files['file']
+      f.save(f"App/static/images/{request.form.get('image_type')}/" + secure_filename(f.filename))
+      return 'file uploaded successfully'
 
 # ---------------  PERSON  --------------- #
 

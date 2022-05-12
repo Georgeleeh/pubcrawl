@@ -1,0 +1,43 @@
+{% extends "base.html" %} {% block content %}
+<form
+  action="{% block form_action %}{{ url_for('image_upload') }}{% endblock %}"
+  enctype="multipart/form-data"
+  class="w-75 mx-auto form-horizontal d-grid gap-3"
+  method="post"
+>
+  <div class="card form-group">
+    <h5 class="card-header">Image Type</h5>
+    <div class="card-body">
+      <select
+        class="bootstrap-select form-control"
+        id="image_type"
+        name="image_type"
+      >
+        <option value="person">Person</option>
+        <option value="place">Place</option>
+        <option value="review">Review</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="card form-group">
+    <h5 class="card-header">Upload Image</h5>
+    <div class="card-body">
+      <input
+        type="file"
+        class="form-control-file"
+        id="FormControlFile"
+        name="file"
+      />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div>
+      <button class="btn btn-primary" type="submit" name="button" value="save">
+        Submit
+      </button>
+    </div>
+  </div>
+</form>
+{% endblock %}
