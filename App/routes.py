@@ -24,7 +24,10 @@ def image_upload():
         return render_template('image_upload.html')
     elif request.method == 'POST':
       f = request.files['file']
-      f.save(f"App/static/images/{request.form.get('image_type')}/" + secure_filename(f.filename))
+      fname = f.filename.split('.')
+      fname[0] = request.form.get('filename')
+      fname = '.'.join(fname)
+      f.save(f"App/static/images/{request.form.get('image_type')}/" + secure_filename(fname))
       return 'file uploaded successfully'
 
 # ---------------  PERSON  --------------- #
