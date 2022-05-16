@@ -14,8 +14,8 @@ def home():
     # Return the from for creating new places
     if request.method == 'GET':
         places = Place.query.all()
-        places = [p for p in places if len(p.reviews) > 0]
-        return render_template('home.html', places=places)
+        reviewed_places = [p for p in places if len(p.reviews) > 0]
+        return render_template('home.html', places=reviewed_places, places_dicts=[p.dict for p in places])
 
 @app.route('/image/upload', methods=['GET', 'POST'])
 def image_upload():
