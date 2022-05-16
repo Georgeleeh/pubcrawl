@@ -19,13 +19,15 @@
 # V0.3 - DONE
 
 - Image upload and storage
-- Add images for People, PLaces, and Reviews
+- Add images for People, Places, and Reviews
 
 # V0.4
 
 - Add interactive map to home page with pins for visited locations
+- Add an image gallery
 
 # V0.9
 
 - Migrate UI to React
-- Add dropdown to show all reviews for a lcoation?
+- Add dropdown to show all reviews for a location?
+- Add images to reviews
