@@ -12,19 +12,26 @@
       zoom: 12,
       center: portsmouth,
     });
-    const ports_mark = new google.maps.Marker({
-      position: portsmouth,
-      map: map,
-    });
     var markers = [];
+    var infoWindows = [];
     // The markers
     places = {{ places_dicts | tojson }};
     for (let i in places) {
+      const contentString = '<h3 id="firstHeading" class="firstHeading">' + places[i]['name'] + '</h3>' + '<div id="bodyContent">' + "<p>" + places[i]['aggregate'] + "</p>" + '</div>'
+      const infoWindow = new google.maps.InfoWindow();
       const marker = new google.maps.Marker({
       position: { lat: places[i]['latitude'], lng: places[i]['longitude'] },
+      title: contentString,
       map: map,
     });
+    // Add a click listener for each marker, and set up the info window.
+    marker.addListener("click", () => {
+      infoWindow.close();
+      infoWindow.setContent(marker.getTitle());
+      infoWindow.open(marker.getMap(), marker);
+    });
     markers.push(marker);
+    infoWindows.push(infoWindow);
     }
   }
 
