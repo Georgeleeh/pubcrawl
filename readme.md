@@ -25,6 +25,11 @@
 
 - Add interactive map to home page with pins for visited locations
 
+# V0.5
+
+- Add Navbar
+- Add tags for locations and reviews
+
 # V0.9
 
 - Migrate UI to React
