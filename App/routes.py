@@ -9,13 +9,16 @@ import statistics
 
 # ---------------  WEBSITE  -------------- #
 
+def render_home(alert=False):
+    places = Place.query.all()
+    reviewed_places = [p for p in places if len(p.reviews) > 0]
+    return render_template('home.html', places=reviewed_places, places_dicts=[p.dict for p in places], alert=alert)
+
 @app.route('/', methods=['GET'])
 def home():
     # Return the from for creating new places
     if request.method == 'GET':
-        places = Place.query.all()
-        reviewed_places = [p for p in places if len(p.reviews) > 0]
-        return render_template('home.html', places=reviewed_places, places_dicts=[p.dict for p in places])
+        return render_home()
 
 @app.route('/image/upload', methods=['GET', 'POST'])
 def image_upload():
@@ -28,7 +31,7 @@ def image_upload():
       fname[0] = request.form.get('filename')
       fname = '.'.join(fname)
       f.save(f"App/static/images/{request.form.get('image_type')}/" + secure_filename(fname))
-      return 'file uploaded successfully'
+      return render_home(alert=True)
 
 # ---------------  PERSON  --------------- #
 
@@ -59,7 +62,7 @@ def all_people():
             )
             db.session.add(p)
             db.session.commit()
-        return {'success' : 'all good!'}, 200
+        return render_home(alert=True)
 
 @app.route('/person/<id>', methods=['GET'])
 def get_person(id):
@@ -105,7 +108,7 @@ def all_places():
             )
             db.session.add(p)
             db.session.commit()
-        return {'success' : 'all good!'}, 200
+        return render_home(alert=True)
 
 @app.route('/place/<id>', methods=['GET'])
 def get_place(id):
@@ -160,7 +163,7 @@ def all_reviews():
         p.aggregate = round(statistics.mean([float(r.rating) for r in p.reviews]), 2)
         db.session.add(p)
         db.session.commit()
-        return {'success' : 'all good!'}, 200
+        return render_home(alert=True)
 
 @app.route('/review/<id>', methods=['GET'])
 def get_review(id):
@@ -200,4 +203,4 @@ def edit_review(id):
             review.image = None if request.form.get('image') == '' else request.form.get('image')
             db.session.add(review)
             db.session.commit()
-            return {'success' : 'all good!'}, 200
+            return render_home(alert=True)
