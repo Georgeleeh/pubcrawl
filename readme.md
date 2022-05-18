@@ -28,6 +28,10 @@
 # V0.5
 
 - Add Navbar
+- Add popups to homepage to confirm new entries
+
+# V0.6
+
 - Add tags for locations and reviews
 
 # V0.9
