@@ -25,7 +25,7 @@
 
 - Add interactive map to home page with pins for visited locations
 
-# V0.5
+# V0.5 - DONE
 
 - Add Navbar
 - Add popups to homepage to confirm new entries
