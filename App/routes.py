@@ -1,6 +1,6 @@
 from App import application as app
 from App import db
-from flask import jsonify, request, render_template
+from flask import jsonify, request, render_template, redirect, url_for
 from werkzeug.utils import secure_filename
 from App.models import Person, Place, Review
 from datetime import datetime
@@ -163,7 +163,7 @@ def all_reviews():
         p.aggregate = round(statistics.mean([float(r.rating) for r in p.reviews]), 2)
         db.session.add(p)
         db.session.commit()
-        return render_home(alert=True)
+        return redirect(url_for('home'))
 
 @app.route('/review/<id>', methods=['GET'])
 def get_review(id):
