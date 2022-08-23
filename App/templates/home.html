@@ -44,29 +44,40 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-{% endif %} {% for place in places %}
-<div class="card" style="width: 18rem">
-  <div class="card-body">
-    <h5 class="card-title">{{place.name}}</h5>
-    <p class="card-text">
-      Some quick example text to build on the card title and make up the bulk of
-      the card's content.
-    </p>
+{% endif %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <div class="card-columns">
+        {% for place in places %}
+        <div class="card" style="width: 18rem">
+          <div class="card-body">
+            <h5 class="card-title">{{place.name}}</h5>
+            <p class="card-text">
+              Some quick example text to build on the card title and make up the
+              bulk of the card's content.
+            </p>
+          </div>
+          <ul class="list-group list-group-flush">
+            <div class="card-header">Average Review - {{place.aggregate}}</div>
+            {% for review in place.reviews %}
+            <li class="list-group-item">
+              {{review.person.nickname}} - {{review.rating}}
+              <br />{{review.content}}
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="col">
+      <div id="map"></div>
+    </div>
   </div>
-  <ul class="list-group list-group-flush">
-    <div class="card-header">Average Review - {{place.aggregate}}</div>
-    {% for review in place.reviews %}
-    <li class="list-group-item">
-      {{review.person.nickname}} - {{review.rating}} <br />{{review.content}}
-    </li>
-    {% endfor %}
-  </ul>
 </div>
-
-<div id="map"></div>
-
 <script
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDokiauDvChpbFspEo4Y_WgRquoITz0_L4&callback=initMap&v=weekly"
   defer
 ></script>
-{% endfor %} {% endblock %}
+{% endblock %}
