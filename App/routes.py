@@ -11,7 +11,7 @@ import statistics
 
 @app.route('/', methods=['GET'])
 def home(alert=False):
-    alert = request.args['alert']
+    alert = request.args.get('alert')
     places = Place.query.all()
     reviewed_places = [p for p in places if len(p.reviews) > 0]
     return render_template('home.html', places=reviewed_places, places_dicts=[p.dict for p in places], alert=alert)
